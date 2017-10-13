@@ -1,7 +1,7 @@
 
 import numpy as np
 import Tool
-from random import sample, choices
+from random import choices
 
 def Stimulated_Annealing(cites,t0,tmin,alpha):
     t = t0

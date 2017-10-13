@@ -28,21 +28,3 @@ if __name__ == "__main__":
     a,b = Evolution_Algorithm(data,k,t)
     print (a)
     print (b)
-    #
-    # list_cities = Generate_Solution(data1,k)
-    # fit_value = Get_Fit_Value(list_cities)
-    #
-    # order = np.asarray(fit_value)
-    # order = np.argsort(order)
-    # print (fit_value)
-    # print (order)
-    # # i = 2
-    # while i < len(dele):
-    #     del dict[dele[i]]
-    #     i = i + 1
-    #
-    # print (dict)
-
-    # a,b = (data, t0, tmin, alpha)
-    # print (a)
-    # print (b)

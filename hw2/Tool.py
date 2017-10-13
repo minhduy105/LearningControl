@@ -1,4 +1,4 @@
-from random import sample, choices
+from random import sample
 import numpy as np
 
 def Get_Distance (A,B): #get distance between two points
