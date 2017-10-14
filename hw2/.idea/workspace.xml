@@ -23,11 +23,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tool.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Tool.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tool.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-28">
-              <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+            <state relative-caret-position="329">
+              <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -35,21 +35,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="random.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/random.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="346" column="0" lean-forward="false" selection-start-line="346" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="EA.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="9" lean-forward="false" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+            <state relative-caret-position="273">
+              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -57,13 +47,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GA.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GA.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="29" column="55" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="55" />
+            <state relative-caret-position="294">
+              <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#21#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -84,9 +74,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/GA.py" />
         <option value="$PROJECT_DIR$/AS.py" />
         <option value="$PROJECT_DIR$/EA.py" />
+        <option value="$PROJECT_DIR$/GA.py" />
         <option value="$PROJECT_DIR$/Tool.py" />
       </list>
     </option>
@@ -142,7 +132,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.EA">
+  <component name="RunManager" selected="Python.GA">
     <configuration name="AS" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -194,6 +184,23 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
+    <configuration name="GA" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="hw2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GA.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="Tool" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -211,18 +218,20 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.AS" />
       <item index="1" class="java.lang.String" itemvalue="Python.FF" />
       <item index="2" class="java.lang.String" itemvalue="Python.Tool" />
       <item index="3" class="java.lang.String" itemvalue="Python.EA" />
+      <item index="4" class="java.lang.String" itemvalue="Python.GA" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.EA" />
-        <item index="1" class="java.lang.String" itemvalue="Python.AS" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Tool" />
-        <item index="3" class="java.lang.String" itemvalue="Python.FF" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.GA" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Tool" />
+        <item index="2" class="java.lang.String" itemvalue="Python.EA" />
+        <item index="3" class="java.lang.String" itemvalue="Python.AS" />
+        <item index="4" class="java.lang.String" itemvalue="Python.FF" />
       </list>
     </recent_temporary>
   </component>
@@ -423,16 +432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="29" column="55" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AS.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -445,7 +444,7 @@
     </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/random.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
+        <state relative-caret-position="-333">
           <caret line="346" column="0" lean-forward="false" selection-start-line="346" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
           <folding />
         </state>
@@ -453,8 +452,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="9" lean-forward="false" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+        <state relative-caret-position="273">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
@@ -463,10 +462,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tool.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-28">
-          <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+        <state relative-caret-position="329">
+          <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>

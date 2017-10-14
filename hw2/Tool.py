@@ -41,8 +41,6 @@ class Tool ():
             t = t * alpha
         return self.cities, old_dis, self.list_dict
 
-
-
     def Generate_Solution(self,k):
         list_cities = []
         list_cities.append(self.cities)
@@ -57,7 +55,8 @@ class Tool ():
         for i in list_cites:
             value.append(self.Get_Total_Distance(i))
         value = np.asarray(value)
-        value = value - np.min(value)
+        value = value - np.min(value) + 0.00001
+        #add +0.00001 in case all the values ia equally good, which will mess up the random.choices function in Get_Condensed_List function
         return value
 
     def Get_Condensed_List(self,list_cities,k):
@@ -65,7 +64,7 @@ class Tool ():
         le = len(fit_value)
         i = 0
         while i < le -k:
-            [idx] = choices(range(len(list_cities)), weights=fit_value)
+            [idx] = choices(range(len(fit_value)), weights=fit_value)
             del list_cities[idx]
             fit_value = np.delete(fit_value,idx)
             i = i + 1
@@ -94,5 +93,35 @@ class Tool ():
             i = i + 1
         idx = self.Get_Best_Solution_Location(list_cities)
         return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
+
+    def Combined(self,parent1, parent2,b):
+        comb = parent1[:int(len(parent1)*b)]
+        dif = np.setdiff1d(parent2, comb, assume_unique=True)
+        comb = np.append(comb,dif)
+        return comb
+
+    def Cross_Over(self,list_cities,b):
+        le = len(list_cities)
+        i = 0
+        while i < le:
+            new_cities = np.copy(list_cities[i])
+            np.random.shuffle(new_cities)
+            list_cities.append(new_cities)
+            child = self.Combined(list_cities[i],new_cities,b)
+            list_cities.append(child)
+            i = i + 1
+
+        return list_cities
+
+    def Generic_Algorithm(self,k,t,b):
+        list_cities = self.Generate_Solution(k)
+        i = 0
+        while i < t:
+            list_cities = self.Cross_Over(list_cities,b)
+            list_cities = self.Get_Condensed_List(list_cities,k)
+            i = i + 1
+        idx = self.Get_Best_Solution_Location(list_cities)
+        return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
+
 
 
