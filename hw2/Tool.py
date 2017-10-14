@@ -7,8 +7,8 @@ class Tool ():
         self.list_dict = dict(zip(self.cities,list_cities))
 
     def Get_Distance (self,A,B): #get distance between two points
-        return np.sqrt(np.square(np.abs(self.list_dict[A][0] - self.list_dict[B][0]))
-                       + np.square(np.abs(self.list_dict[A][1] - self.list_dict[B][1])))
+        return np.sqrt((np.abs(self.list_dict[A][0] - self.list_dict[B][0]))**2
+                       + (np.abs(self.list_dict[A][1] - self.list_dict[B][1]))**2)
 
     def Get_Total_Distance(self,Cities):# get total distance from a path
         total_distance = 0
@@ -41,6 +41,8 @@ class Tool ():
             t = t * alpha
         return self.cities, old_dis, self.list_dict
 
+
+
     def Generate_Solution(self,k):
         list_cities = []
         list_cities.append(self.cities)
@@ -54,18 +56,20 @@ class Tool ():
         value = []
         for i in list_cites:
             value.append(self.Get_Total_Distance(i))
+        value = np.asarray(value)
+        value = value - np.min(value)
         return value
 
     def Get_Condensed_List(self,list_cities,k):
         fit_value = self.Get_Fit_Value(list_cities)
-        order = np.asarray(fit_value)
-        order = np.argsort(order)
+        le = len(fit_value)
         i = 0
-        shorted_list = []
-        while i < k:
-            shorted_list.append(list_cities[order[i]])
+        while i < le -k:
+            [idx] = choices(range(len(list_cities)), weights=fit_value)
+            del list_cities[idx]
+            fit_value = np.delete(fit_value,idx)
             i = i + 1
-        return shorted_list
+        return list_cities
 
     def Mutated(self,list_cities):
         le = len(list_cities)
@@ -75,6 +79,12 @@ class Tool ():
             i = i + 1
         return list_cities
 
+    def Get_Best_Solution_Location(self,list_cities):
+        fit_value = self.Get_Fit_Value(list_cities)
+        order = np.asarray(fit_value)
+        order = np.argsort(order)
+        return order[0]
+
     def Evolution_Algorithm(self, k, t):
         list_cities = self.Generate_Solution(k)
         i = 0
@@ -82,6 +92,7 @@ class Tool ():
             list_cities = self.Mutated(list_cities)
             list_cities = self.Get_Condensed_List(list_cities, k)
             i = i + 1
-        return list_cities[0], self.Get_Total_Distance(list_cities[0]), self.list_dict
+        idx = self.Get_Best_Solution_Location(list_cities)
+        return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
 
 
