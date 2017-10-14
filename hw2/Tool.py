@@ -2,28 +2,37 @@ from random import sample, choices
 import numpy as np
 
 class Tool ():
+    #get the cities and assigned a ID number for it
     def __init__(self,list_cities):
         self.cities = np.arange(len(list_cities))
         self.list_dict = dict(zip(self.cities,list_cities))
 
+    #Accepted the ID number of city A and B and calculate the distance between the two of them
     def Get_Distance (self,A,B): #get distance between two points
         return np.sqrt((np.abs(self.list_dict[A][0] - self.list_dict[B][0]))**2
                        + (np.abs(self.list_dict[A][1] - self.list_dict[B][1]))**2)
 
-    def Get_Total_Distance(self,Cities):# get total distance from a path
+    # Get total distance from a solution path (Cities)
+    def Get_Total_Distance(self,Cities):
         total_distance = 0
         num_cities = Cities.shape[0]
         for i in range (num_cities - 1):
             total_distance = total_distance + self.Get_Distance(Cities[i],Cities[i+1])
         total_distance = total_distance + self.Get_Distance(Cities[0],Cities[num_cities - 1])
+        #distance between first and last element
         return total_distance
 
-    def Swap_Element(self,cities): #Swap location of two city
+    # Swap the location of two city in a solution path (cities)
+    def Swap_Element(self,cities):
         new_cities = np.copy(cities)
         [iA, iB] = sample(range(cities.shape[0]), k=2)
         new_cities[iA],new_cities[iB] = cities[iB],cities[iA]
         return new_cities
 
+    # The stimulated Annealing function,
+    # t0 is the initial temperature
+    # tmin is the minimum temperature, the program will stop after this need to be smaller than t0
+    # alpha is how much you update the temperature overtime, need to be < 1
     def Stimulated_Annealing(self, t0, tmin, alpha):
         t = t0
         old_dis = 0
@@ -34,13 +43,14 @@ class Tool ():
             if (new_dis < old_dis):
                 self.cities = new_cities
             else:
-                p = np.exp(-(new_dis - old_dis) / t)
+                p = np.exp(-(new_dis - old_dis) / t) #calculate the probability
                 [A] = choices((True, False), weights=[p, 1.0 - p])  # choice based on the probability
                 if A:
                     self.cities = new_cities
             t = t * alpha
         return self.cities, old_dis, self.list_dict
 
+    # generate a list of solution, the size of the list is k
     def Generate_Solution(self,k):
         list_cities = []
         list_cities.append(self.cities)
@@ -50,26 +60,33 @@ class Tool ():
             list_cities.append(new_cities)
         return list_cities
 
+    # get the fit value, which is the dif between the path distances in the last and the best(smallest) path in the list
+    # the reason for using the different is we want to emphasize it when we look at the best result
+    # NOTE: it will return the fitness in reverse
     def Get_Fit_Value(self,list_cites):
         value = []
         for i in list_cites:
             value.append(self.Get_Total_Distance(i))
         value = np.asarray(value)
         value = value - np.min(value) + 0.00001
-        #add +0.00001 in case all the values ia equally good, which will mess up the random.choices function in Get_Condensed_List function
+        #add +0.00001 in case all the values ia equally good,
+        #which will mess up the random.choices function in Get_Condensed_List function
         return value
 
+    # shorten the population back to k number of elements using fitness value
     def Get_Condensed_List(self,list_cities,k):
         fit_value = self.Get_Fit_Value(list_cities)
         le = len(fit_value)
         i = 0
+        # the ideas is delete the path/solutions that is large, it pick them based on the inverse fit value
         while i < le -k:
             [idx] = choices(range(len(fit_value)), weights=fit_value)
-            del list_cities[idx]
-            fit_value = np.delete(fit_value,idx)
+            del list_cities[idx]#because this is list
+            fit_value = np.delete(fit_value,idx)#because this is numpy
             i = i + 1
         return list_cities
 
+    # this creates a mutation set of the cities list and add it back to the city list
     def Mutated(self,list_cities):
         le = len(list_cities)
         i = 0
@@ -78,12 +95,16 @@ class Tool ():
             i = i + 1
         return list_cities
 
+    # get the best solution from a list of cities
     def Get_Best_Solution_Location(self,list_cities):
         fit_value = self.Get_Fit_Value(list_cities)
         order = np.asarray(fit_value)
         order = np.argsort(order)
         return order[0]
 
+    #this is the Evolution Algorithm program
+    # k is the size of the population
+    # t is the number of time we run the algorithm
     def Evolution_Algorithm(self, k, t):
         list_cities = self.Generate_Solution(k)
         i = 0
@@ -94,17 +115,19 @@ class Tool ():
         idx = self.Get_Best_Solution_Location(list_cities)
         return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
 
+    # Combined two parents solution and return a child
     def Combined(self,parent1, parent2,b):
         comb = parent1[:int(len(parent1)*b)]
-        dif = np.setdiff1d(parent2, comb, assume_unique=True)
+        dif = np.setdiff1d(parent2, comb, assume_unique=True)#get the cities that is in parent 2 but not in comb
         comb = np.append(comb,dif)
         return comb
 
     def Cross_Over(self,list_cities,b):
         le = len(list_cities)
         i = 0
+        # create the new population with a new element/parent and a child from that new parent and an existed parent
         while i < le:
-            new_cities = np.copy(list_cities[i])
+            new_cities = np.copy(list_cities[i])# need to use copy for deepcopy
             np.random.shuffle(new_cities)
             list_cities.append(new_cities)
             child = self.Combined(list_cities[i],new_cities,b)
@@ -113,6 +136,10 @@ class Tool ():
 
         return list_cities
 
+    # This is the Generic Algorithm
+    # k is the size of the population
+    # t is how many time we ran it
+    # b is the percent of gene from the existed parent that we will keep
     def Generic_Algorithm(self,k,t,b):
         list_cities = self.Generate_Solution(k)
         i = 0

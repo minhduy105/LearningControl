@@ -3,8 +3,8 @@ import numpy as np
 from Tool import Tool
 
 if __name__ == "__main__":
-    t0 = 1000000
-    tmin = 0.00001
+    t0 = 10
+    tmin = 0.059
     alpha = 0.95
     data = np.genfromtxt('15cities.csv', delimiter=',')
     data = np.delete(data, (0), axis=0)
