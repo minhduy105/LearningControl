@@ -1,5 +1,6 @@
 from random import sample, choices
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Tool ():
     #get the cities and assigned a ID number for it
@@ -23,21 +24,26 @@ class Tool ():
         return total_distance
 
     # Swap the location of two city in a solution path (cities)
-    def Swap_Element(self,cities):
+    # t is how many times you want to swap cities
+    def Swap_Element(self,cities,t):
         new_cities = np.copy(cities)
-        [iA, iB] = sample(range(cities.shape[0]), k=2)
-        new_cities[iA],new_cities[iB] = cities[iB],cities[iA]
+        i = 0
+        while i < t:
+            [iA, iB] = sample(range(cities.shape[0]), k=2)
+            new_cities[iA],new_cities[iB] = cities[iB],cities[iA]
+            i = i + 1
         return new_cities
 
     # The stimulated Annealing function,
     # t0 is the initial temperature
     # tmin is the minimum temperature, the program will stop after this need to be smaller than t0
     # alpha is how much you update the temperature overtime, need to be < 1
-    def Stimulated_Annealing(self, t0, tmin, alpha):
+    #st is how many times you want to swap the element
+    def Stimulated_Annealing(self, t0, tmin, alpha,st):
         t = t0
         old_dis = 0
         while t > tmin:
-            new_cities = self.Swap_Element(self.cities)
+            new_cities = self.Swap_Element(self.cities,st)
             new_dis = self.Get_Total_Distance(new_cities)
             old_dis = self.Get_Total_Distance(self.cities)
             if (new_dis < old_dis):
@@ -49,6 +55,36 @@ class Tool ():
                     self.cities = new_cities
             t = t * alpha
         return self.cities, old_dis, self.list_dict
+
+    # The stimulated Annealing function,
+    # t0 is the initial temperature
+    # tmin is the minimum temperature, the program will stop after this need to be smaller than t0
+    # alpha is how much you update the temperature overtime, need to be < 1
+    #st is how many times you want to swap the element
+    def Stimulated_Annealing_Epoch(self, t0, tmin, alpha,st,epoch_num):
+        t = t0
+        old_dis = 0
+        iE = 0
+        epoch = []
+        while t > tmin:
+            new_cities = self.Swap_Element(self.cities,st)
+            new_dis = self.Get_Total_Distance(new_cities)
+            old_dis = self.Get_Total_Distance(self.cities)
+            if (new_dis < old_dis):
+                self.cities = new_cities
+            else:
+                p = np.exp(-(new_dis. - old_dis) / t) #calculate the probability
+                [A] = choices((True, False), weights=[p, 1.0 - p])  # choice based on the probability
+                if A:
+                    self.cities = new_cities
+            iE = iE + 1
+            if iE >= epoch_num:
+                epoch.append(self.Get_Total_Distance(self.cities))
+                iE =0
+
+            t = t * alpha
+        return self.cities, old_dis, self.list_dict, epoch
+
 
     # generate a list of solution, the size of the list is k
     def Generate_Solution(self,k):
@@ -87,11 +123,12 @@ class Tool ():
         return list_cities
 
     # this creates a mutation set of the cities list and add it back to the city list
-    def Mutated(self,list_cities):
+    def Mutated(self,list_cities,st):
         le = len(list_cities)
         i = 0
         while i < le:
-            list_cities.append(self.Swap_Element(list_cities[i]))
+            new_cities = self.Swap_Element(list_cities[i],st)
+            list_cities.append(new_cities)
             i = i + 1
         return list_cities
 
@@ -105,11 +142,12 @@ class Tool ():
     #this is the Evolution Algorithm program
     # k is the size of the population
     # t is the number of time we run the algorithm
-    def Evolution_Algorithm(self, k, t):
+    # st is how many times you want to swap the element
+    def Evolution_Algorithm(self, k, t,st):
         list_cities = self.Generate_Solution(k)
         i = 0
         while i < t:
-            list_cities = self.Mutated(list_cities)
+            list_cities = self.Mutated(list_cities,st)
             list_cities = self.Get_Condensed_List(list_cities, k)
             i = i + 1
         idx = self.Get_Best_Solution_Location(list_cities)
@@ -122,6 +160,7 @@ class Tool ():
         comb = np.append(comb,dif)
         return comb
 
+    #this is the function that handle cross over between two parents
     def Cross_Over(self,list_cities,b):
         le = len(list_cities)
         i = 0
@@ -150,5 +189,24 @@ class Tool ():
         idx = self.Get_Best_Solution_Location(list_cities)
         return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
 
-
-
+    #Draw the graph based on the cities name and dictionary
+    #cities is cities name
+    #dict is the dictionary
+    #name is the name of the file
+    #color and line, ex 'ro-'
+    def Draw_Graph(self,cities,dict,name,color):
+        result = []
+        for i in cities:
+            result.append(dict[i])
+        result = np.asarray(result)
+        result = np.append(result, result[0].reshape((1, 2)), axis=0)
+        x = result[:, 0]
+        y = result[:, 1]
+        fig = plt.figure()
+        plt.plot(x, y, color)
+        #plt.errorbar(x,y,yerr=20)
+        plt.ylabel('y')
+        plt.xlabel('x')
+        plt.title(name)
+        fig.savefig(name + '.png')
+        plt.close(fig)
