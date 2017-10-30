@@ -65,9 +65,9 @@ for j in range(10):
         tolRA.append(tolR)
 
         i = i +1
-    all = np.asarray(data)
-    y = np.mean(all, axis=0)
-    err = np.std(all, axis=0)
+    # all = np.asarray(data)
+    # y = np.mean(all, axis=0)
+    # err = np.std(all, axis=0)
 
     title = "E_Greedy_" + str(a) + "alpha_" + str(e) + "e"
     name = "Graph\\"+title+ "_run_" + str(terT) + "times_average_reward"
