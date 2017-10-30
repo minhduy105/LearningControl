@@ -26,13 +26,14 @@ class Tool ():
     # Swap the location of two city in a solution path (cities)
     # t is how many times you want to swap cities
     def Swap_Element(self,cities,t):
-        new_cities = np.copy(cities)
+        new_cities1 = np.copy(cities)
+        new_cities2 = np.copy(cities)
         i = 0
         while i < t:
             [iA, iB] = sample(range(cities.shape[0]), k=2)
-            new_cities[iA],new_cities[iB] = cities[iB],cities[iA]
+            new_cities1[iA],new_cities1[iB] = new_cities2[iB],new_cities2[iA]
             i = i + 1
-        return new_cities
+        return new_cities1
 
     # The stimulated Annealing function,
     # t0 is the initial temperature
@@ -61,11 +62,13 @@ class Tool ():
     # tmin is the minimum temperature, the program will stop after this need to be smaller than t0
     # alpha is how much you update the temperature overtime, need to be < 1
     #st is how many times you want to swap the element
+    #epoch_num the number of epoch that it will return the result
     def Stimulated_Annealing_Epoch(self, t0, tmin, alpha,st,epoch_num):
         t = t0
         old_dis = 0
         iE = 0
         epoch = []
+        epoch.append(self.Get_Total_Distance(self.cities))
         while t > tmin:
             new_cities = self.Swap_Element(self.cities,st)
             new_dis = self.Get_Total_Distance(new_cities)
@@ -73,7 +76,7 @@ class Tool ():
             if (new_dis < old_dis):
                 self.cities = new_cities
             else:
-                p = np.exp(-(new_dis. - old_dis) / t) #calculate the probability
+                p = np.exp(-(new_dis.astype(np.float64) - old_dis.astype(np.float64)) / t) #calculate the probability
                 [A] = choices((True, False), weights=[p, 1.0 - p])  # choice based on the probability
                 if A:
                     self.cities = new_cities
@@ -150,9 +153,33 @@ class Tool ():
             list_cities = self.Mutated(list_cities,st)
             list_cities = self.Get_Condensed_List(list_cities, k)
             i = i + 1
+
         idx = self.Get_Best_Solution_Location(list_cities)
         return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
 
+    # this is the Evolution Algorithm program
+    # k is the size of the population
+    # t is the number of time we run the algorithm
+    # st is how many times you want to swap the element
+    def Evolution_Algorithm_Epoch(self, k, t, st,epoch_num):
+        list_cities = self.Generate_Solution(k)
+        i = 0
+        iE = 0
+        idx = self.Get_Best_Solution_Location(list_cities)
+        epoch = []
+        epoch.append(self.Get_Total_Distance(list_cities[idx]))
+        while i < t:
+            list_cities = self.Mutated(list_cities, st)
+            list_cities = self.Get_Condensed_List(list_cities, k)
+            i = i + 1
+            iE = iE + 1
+            if iE >= epoch_num:
+                idx = self.Get_Best_Solution_Location(list_cities)
+                epoch.append(self.Get_Total_Distance(list_cities[idx]))
+                iE = 0
+
+        idx = self.Get_Best_Solution_Location(list_cities)
+        return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict, epoch
     # Combined two parents solution and return a child
     def Combined(self,parent1, parent2,b):
         comb = parent1[:int(len(parent1)*b)]
@@ -189,12 +216,32 @@ class Tool ():
         idx = self.Get_Best_Solution_Location(list_cities)
         return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict
 
+    def Generic_Algorithm_Epoch(self,k,t,b,epoch_num):
+        list_cities = self.Generate_Solution(k)
+        iE = 0
+        idx = self.Get_Best_Solution_Location(list_cities)
+        epoch = []
+        epoch.append(self.Get_Total_Distance(list_cities[idx]))
+        i = 0
+        while i < t:
+            list_cities = self.Cross_Over(list_cities,b)
+            list_cities = self.Get_Condensed_List(list_cities,k)
+            i = i + 1
+
+            iE = iE + 1
+            if iE >= epoch_num:
+                idx = self.Get_Best_Solution_Location(list_cities)
+                epoch.append(self.Get_Total_Distance(list_cities[idx]))
+                iE = 0
+        idx = self.Get_Best_Solution_Location(list_cities)
+        return list_cities[idx], self.Get_Total_Distance(list_cities[idx]), self.list_dict, epoch
+
     #Draw the graph based on the cities name and dictionary
     #cities is cities name
     #dict is the dictionary
     #name is the name of the file
     #color and line, ex 'ro-'
-    def Draw_Graph(self,cities,dict,name,color):
+    def Draw_Graph(self,cities,dict,name,color,title):
         result = []
         for i in cities:
             result.append(dict[i])
@@ -207,6 +254,6 @@ class Tool ():
         #plt.errorbar(x,y,yerr=20)
         plt.ylabel('y')
         plt.xlabel('x')
-        plt.title(name)
+        plt.title(title)
         fig.savefig(name + '.png')
         plt.close(fig)
