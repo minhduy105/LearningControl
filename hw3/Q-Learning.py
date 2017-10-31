@@ -1,7 +1,7 @@
 import numpy as np
 import  random
 import matplotlib.pyplot as plt
-from Map import Map
+
 
 def Get_Q(sta,pos): #update the surrounding and get Q action
     (z,y,x) = sta.shape
@@ -49,17 +49,19 @@ def Update_Q(sta,loc,map,y,a):
     sta[4][loc[0]][loc[1]] = sta[4][loc[0]][loc[1]] + dif
     return sta
 
-def Q_Learning(map,loc,y,a,e,ite):
-    M = Map(map)
+def Q_Learning(sta,map,loc,y,a,e,ite):
     i = 0
-    (x1, x2) = map.shape
-    sta = np.zeros((5, x1, x2))
+    staA = []
+    locA = []
     while i < ite:
         sta = Update_Q(sta,loc,map,y,a)
         loc = Take_Action(sta,loc,e)
         i = i + 1
-        print (sta[4,:,:])
-    return sta
+        staA.append(sta[4,:,:])
+        locA.append(sta[4][loc[0]][loc[1]])
+        #print (sta[4,:,:])
+#    print (sta[4][loc[0]][loc[1]])
+    return sta, loc,staA,locA
 
 def Take_Action(sta,loc,e):
     sta, reward, xyCor = Get_Q(sta,loc)
@@ -83,6 +85,7 @@ def Take_Action(sta,loc,e):
 def Draw_Graph(data,title,xname,yname,name,csvname):
     all = np.asarray(data)
     y = np.mean(all,axis=0)
+
     err = np.std(all,axis=0)
     x = np.arange(1,y.shape[0]+1)
     fig = plt.figure()
@@ -102,12 +105,29 @@ valAllAve = []
 valAllStd = []
 tolAllAve = []
 tolAllStd = []
-st = [random.randint(0,y-1),random.randint(0,x-1)]
-y1 = 0.9
-a = 0.1
-ite = 100
-e = 0.001
-state = Q_Learning(map,st,y1,a,e,ite)
+for kt in range (4):
+    print (kt)
+    st = [random.randint(0,y-1),random.randint(0,x-1)]
+    y1 = round(0.2 *(1.0+kt),2)
+    a = 0.1
+    ite = 20
+    e = 0.001
+    count = 0
+
+    (x1, x2) = map.shape
+    for j in range (2000):
+        sta = np.zeros((5, x1, x2))
+        valAllAve = []
+        for i in range (200):
+            st = [random.randint(0, x1 - 1), random.randint(0, x2 - 1)]
+            sta,loc,staA,locA = Q_Learning(sta,map,st,y1,a,e,ite)
+            valAllAve.append(sta[4][loc[0]][loc[1]])
+        tolAllAve.append(valAllAve)
+    title = "QLearning_" + str(a) + "alpha_" + str(e) + "e_" + str(y1) +"y_random"
+    name = "Graph\\"+title
+    csvname = "Graph\\Info\\"+title
+    Draw_Graph(tolAllAve,title,"epochs","average_reward",name,csvname)
+
 
 #
 # st = [random.randint(0, y - 1), random.randint(0, x - 1)]

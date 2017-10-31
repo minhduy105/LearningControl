@@ -69,7 +69,7 @@ tolAllStd = []
 for j in range(10):
 
     # re, pos = M.Get_Reward([4,9]) #[y,x]
-    termT = 20
+    termT = 100
     e = round (0.02 * (j + 1),3)
     a = 0.1
     i = 0
@@ -90,7 +90,7 @@ for j in range(10):
         i = i +1
 
 
-    title = "E_Greedy_" + str(a) + "alpha_" + str(e) + "e_random"
+    title = "E_Greedy_" + str(a) + "alpha_" + str(e) + "e_random" + str(st[0])+"," + str(st[1])
     name = "Graph\\"+title+ "_run_" + str(terT) + "times_average_reward"
     csvname = "Graph\\Info\\"+title+ "_run_" + str(terT) + "times_average_reward"
     Draw_Graph(valA,title,"times","average_reward",name,csvname)
